@@ -1,10 +1,47 @@
 ---
 title: "p8015_hw5_tl2882"
 author: "Tian Li"
+date: 2018-11-04
 output: github_document
 ---
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = 1,
+  out.width = "90%"
+)
+
+theme_set(theme_bw() + theme(legend.position = "bottom"))
 ```
 
+# Problem 1
+
+## Read data
+```{r read_data}
+read_data = function(file){
+  read.csv(str_c("./data/", as.character(file)))
+}
+
+file_name = list.files("./data")
+output = purrr::map_df(file_name, read_data)
+```
+
+## Tidy data
+```{r tidy_data}
+data = output %>%
+  mutate(input = file_name) %>% 
+  separate(input, into = c("arm", "id"), sep = "_") %>% 
+  mutate(id = str_replace(id, ".csv", "")) %>% 
+  gather(key = "week", value = "value", week_1:week_8) %>% 
+  mutate(week = str_replace(week, "week_", ""))
+```
+
+
+
+# Problem 2
