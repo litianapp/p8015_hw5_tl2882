@@ -13,7 +13,7 @@ library(tidyverse)
 
 knitr::opts_chunk$set(
   fig.width = 6,
-  fig.asp = 1,
+  fig.asp = 0.6,
   out.width = "90%"
 )
 
@@ -40,8 +40,19 @@ data = output %>%
   mutate(id = str_replace(id, ".csv", "")) %>% 
   gather(key = "week", value = "value", week_1:week_8) %>% 
   mutate(week = str_replace(week, "week_", ""))
+
+head(data)
 ```
 
+## Spaghetti plot
+```{r}
+data %>%
+  mutate(week = as.numeric(week)) %>% 
+  ggplot(aes(x = week, y = value, color = id)) +
+    geom_line() +
+    facet_grid(~arm) + 
+    labs(title = "Observations on each subject over time in different groups")
+```
 
+This is the spaghetti plot showing observations on each subject over time.
 
-# Problem 2
