@@ -56,3 +56,9 @@ data %>%
 
 This is the spaghetti plot showing observations on each subject over time.
 
+### Comment
+1. In experimental group, most values tend to grow over time in general; In control group, most values don't have many changes over time in general.
+
+2. Relatively, most values in experimental group are higher than those in control group.
+
+# Problem 2
