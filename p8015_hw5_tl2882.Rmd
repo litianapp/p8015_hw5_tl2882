@@ -1,7 +1,7 @@
 ---
 title: "p8015_hw5_tl2882"
 author: "Tian Li"
-date: 2018-11-04
+date: 2018-11-07
 output: github_document
 ---
 
@@ -84,10 +84,12 @@ data_count = data2 %>%
 head(data_count)
 ```
 
+"data_count" is the data frame which shows the total number of homicides and the number of unsolved homicides according to cities.
+
 ## Proportion test
 
 ### Baltimore
-```{r prop_test}
+```{r test_bal}
 data_bal = 
   data_count %>% 
   filter(city_state == "Baltimore, MD")
@@ -95,14 +97,14 @@ data_bal =
 prop_bal = prop.test(data_bal$n_unsolved, data_bal$n_total)
 
 prop_bal %>% 
-  broom::tidy(prop_bal) %>% 
+  broom::tidy() %>% 
   select(estimate, conf.low, conf.high)
 ```
 
 For the city of Baltimore, MD, the estimate proportion is 0.646, and the CI is (0.628, 0.663).
 
 ### All cities
-```{r}
+```{r test_all}
 prop_all = 
   data_count %>% 
   mutate(tests = purrr::map2(.x = data_count$n_unsolved, .y = data_count$n_total,
@@ -113,5 +115,5 @@ prop_all =
 head(prop_all)
 ```
 
-The object "prop_all" is the tidy dataframe with estimated proportions and CIs for each city.
+"prop_all" is the tidy dataframe with estimated proportions and CIs for each city.
 
