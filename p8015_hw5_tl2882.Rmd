@@ -62,12 +62,27 @@ This is the spaghetti plot showing observations on each subject over time.
 2. Relatively, most values in experimental group are higher than those in control group.
 
 # Problem 2
-```{r}
+
+## Read data
+```{r read_data2}
 data2 = read.csv("https://raw.githubusercontent.com/washingtonpost/data-homicides/master/homicide-data.csv")
 
 head(data2)
 ```
-The dimension of the raw data is ```r dim(data2)``` (observations X variables).
+The dimension of the raw data is ```r dim(data2)``` (number of observations, variables).
 
-Vriable.names are ```r variable.names(data2)```
+Vriable names are ```r variable.names(data2)```.
+
+## Count homicides
+```{r count_homicides}
+data_count = data2 %>% 
+  unite(city_state, city, state, sep = ",") %>% 
+  group_by(city_state) %>% 
+  summarise(n_unsolved = sum(disposition %in% c("Closed without arrest", "Open/No arrest")),
+            n_total = n())
+
+head(data_count)
+```
+
+
 
