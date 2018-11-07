@@ -84,7 +84,7 @@ data_count = data2 %>%
 head(data_count)
 ```
 
-"data_count" is the data frame which shows the total number of homicides and the number of unsolved homicides according to cities.
+"data_count" is the dataframe which shows the total number of homicides and the number of unsolved homicides according to cities.
 
 ## Proportion test
 
@@ -117,3 +117,16 @@ head(prop_all)
 
 "prop_all" is the tidy dataframe with estimated proportions and CIs for each city.
 
+## Bar lot
+```{r bar_plot}
+prop_all %>% 
+  filter(city_state != "Tulsa, AL") %>% 
+  mutate(city_state = fct_reorder(city_state, estimate)) %>%
+  ggplot(aes(x = city_state, weight = estimate)) +
+    geom_bar() + 
+    geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.5) +
+    labs(title = "The estimates and CIs for each city", y = "Proportion") +
+    theme(axis.text.x = element_text(angle = -90))
+```
+
+This is the bar plot that shows the estimates and CIs for each city.
