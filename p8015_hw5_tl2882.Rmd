@@ -45,7 +45,7 @@ head(data)
 ```
 
 ## Spaghetti plot
-```{r}
+```{r Spaghetti_plot}
 data %>%
   mutate(week = as.numeric(week)) %>% 
   ggplot(aes(x = week, y = value, color = id)) +
@@ -62,3 +62,12 @@ This is the spaghetti plot showing observations on each subject over time.
 2. Relatively, most values in experimental group are higher than those in control group.
 
 # Problem 2
+```{r}
+data2 = read.csv("https://raw.githubusercontent.com/washingtonpost/data-homicides/master/homicide-data.csv")
+
+head(data2)
+```
+The dimension of the raw data is ```r dim(data2)``` (observations X variables).
+
+Vriable.names are ```r variable.names(data2)```
+
