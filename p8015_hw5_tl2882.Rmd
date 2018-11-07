@@ -76,7 +76,7 @@ Vriable names are ```r variable.names(data2)```.
 ## Count homicides
 ```{r count_homicides}
 data_count = data2 %>% 
-  unite(city_state, city, state, sep = ",") %>% 
+  unite(city_state, city, state, sep = ", ") %>% 
   group_by(city_state) %>% 
   summarise(n_unsolved = sum(disposition %in% c("Closed without arrest", "Open/No arrest")),
             n_total = n())
@@ -84,5 +84,34 @@ data_count = data2 %>%
 head(data_count)
 ```
 
+## Proportion test
 
+### Baltimore
+```{r prop_test}
+data_bal = 
+  data_count %>% 
+  filter(city_state == "Baltimore, MD")
+
+prop_bal = prop.test(data_bal$n_unsolved, data_bal$n_total)
+
+prop_bal %>% 
+  broom::tidy(prop_bal) %>% 
+  select(estimate, conf.low, conf.high)
+```
+
+For the city of Baltimore, MD, the estimate proportion is 0.646, and the CI is (0.628, 0.663).
+
+### All cities
+```{r}
+prop_all = 
+  data_count %>% 
+  mutate(tests = purrr::map2(.x = data_count$n_unsolved, .y = data_count$n_total,
+                                ~broom::tidy(prop.test(.x, .y)))) %>% 
+  unnest() %>% 
+  select(city_state, estimate, conf.low, conf.high)
+
+head(prop_all)
+```
+
+The object "prop_all" is the tidy dataframe with estimated proportions and CIs for each city.
 
